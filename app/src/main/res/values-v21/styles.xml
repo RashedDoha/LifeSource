@@ -1,0 +1,15 @@
+<resources>
+
+    <style name="headerText">
+
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">20dp</item>
+    </style>
+
+    <style name="FAB">
+        <item name="android:layout_margin">16dp</item>
+        <item name="fabSize">normal</item>
+        <item name="rippleColor">@android:color/white</item>
+        <item name="backgroundTint">@color/primary</item>
+    </style>
+</resources>
