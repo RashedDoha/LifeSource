@@ -1,36 +1,31 @@
 package com.ciphers.lifesource;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
-import static android.R.layout.simple_spinner_dropdown_item;
-import static android.R.layout.simple_spinner_item;
+/**
+ * Created by Rashed on 21/04/2016.
+ */
+public class MapsFragment extends Fragment{
 
 
-public class DataInputFragment extends Fragment {
-    ArrayAdapter<CharSequence> spinnerAdapter;
+    public MapsFragment() {
 
-    public DataInputFragment() {
-        /* Required empty public constructor */
     }
 
     /**
      * Create fragment and pass bundle with data as it's arguments
      * Right now there are not arguments...but eventually there will be.
      */
-    public static DataInputFragment newInstance() {
-        DataInputFragment fragment = new DataInputFragment();
+    public static MapsFragment newInstance() {
+        MapsFragment fragment = new MapsFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -55,7 +50,7 @@ public class DataInputFragment extends Fragment {
         /**
          * Initialize UI elements
          */
-        View rootView = inflater.inflate(R.layout.fragment_data_input, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_map, container, false);
         initializeScreen(rootView);
 
 
@@ -69,17 +64,7 @@ public class DataInputFragment extends Fragment {
 
     }
 
-
-    /**
-     * Link layout elements from XML
-     */
     private void initializeScreen(View rootView) {
-        Spinner spinner = (Spinner) rootView.findViewById(R.id.allergy_spinner);
-        spinnerAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.allergen_array, simple_spinner_item);
 
-        spinnerAdapter.setDropDownViewResource(simple_spinner_dropdown_item);
-        spinner.setAdapter(spinnerAdapter);
     }
-
-
 }

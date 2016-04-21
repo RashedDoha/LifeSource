@@ -1,6 +1,7 @@
 package com.ciphers.lifesource;
 
 import android.app.DialogFragment;
+import android.location.Location;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.TabLayout;
@@ -13,12 +14,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 
 public class MainActivity extends BaseActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient.ConnectionCallbacks mCallbacks;
+    private GoogleApiClient.OnConnectionFailedListener mFailedListener;
 
 
     @Override
@@ -26,10 +32,38 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mCallbacks = new GoogleApiClient.ConnectionCallbacks() {
+            @Override
+            public void onConnected(Bundle bundle) {
+
+            }
+
+            @Override
+            public void onConnectionSuspended(int i) {
+
+            }
+        };
+
+        mFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
+            @Override
+            public void onConnectionFailed(ConnectionResult connectionResult) {
+
+            }
+        };
+
         /**
          * Link layout elements from XML and setup the toolbar
          */
         initializeScreen();
+        buildGoogleApiClient();
+    }
+
+    private void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(mCallbacks)
+                .addOnConnectionFailedListener(mFailedListener)
+                .build();
     }
 
 
@@ -110,7 +144,7 @@ public class MainActivity extends BaseActivity {
                     fragment = DataInputFragment.newInstance();
                     break;
                 case 1:
-                    fragment = DataInputFragment.newInstance();
+                    fragment = MapsFragment.newInstance();
                     break;
                 default:
                     fragment = DataInputFragment.newInstance();

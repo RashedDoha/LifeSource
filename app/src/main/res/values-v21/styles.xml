@@ -1,10 +1,19 @@
 <resources>
 
-    <style name="headerText">
-
-        <item name="android:textSize">20sp</item>
-        <item name="android:padding">20dp</item>
+    <style name="layoutPadding">
+        <item name="android:padding">10dp</item>
     </style>
+
+    <style name="headerText">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="symptomText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:minWidth">150dp</item>
+    </style>
+
+
 
     <style name="FAB">
         <item name="android:layout_margin">16dp</item>

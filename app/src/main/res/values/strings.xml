@@ -8,6 +8,28 @@
 
     <string name="action_settings">Settings</string>
     <string name="health_condition_text">My Health Condition</string>
+    <string name="diseases_text">Common Diseases In My Area</string>
+    <string name="cough_string">Cough: </string>
+    <string name="shortness_string">Shortness of Breath: </string>
+    <string name="wheezing_string">Wheezing: </string>
+    <string name="sneezing_string">Sneezing: </string>
+    <string name="nasal_string">Nasal Obstruction: </string>
+    <string name="itchy_string">Itchy Eyes: </string>
+    <string name="allergy_string">Allergic To: </string>
+
+    <string name="fever_string">Fever: </string>
+    <string name="flu_string">Flu: </string>
+    <string name="asthma_string">Asthma: </string>
+
+
+    <string-array name="allergen_array">
+        <item>None</item>
+        <item>Pollen</item>
+        <item>Mold</item>
+        <item>Dust Mites</item>
+        <item>Others</item>
+    </string-array>
+
 
 
 </resources>
