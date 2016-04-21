@@ -6,4 +6,7 @@ package com.ciphers.lifesource.utils;
 public class Constants {
 
 
+    /* KEYS FOR BUNDLES */
+    public static final String KEY_LATITUDE = "USER_LATITUDE";
+    public static final String KEY_LONGITUDE = "USER_LONGITUDE";
 }
