@@ -50,8 +50,7 @@ public class MapsFragment extends Fragment{
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            userLat = getArguments().getDouble(Constants.KEY_LATITUDE);
-            userLong = getArguments().getDouble(Constants.KEY_LONGITUDE);
+
         }
     }
 
