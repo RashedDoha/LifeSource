@@ -1,5 +1,8 @@
 package com.ciphers.lifesource;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -11,8 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import com.ciphers.lifesource.login.LoginActivity;
+import com.ciphers.lifesource.utils.Constants;
+import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -27,6 +35,9 @@ public class MainActivity extends BaseActivity{
     private GoogleApiClient.OnConnectionFailedListener mFailedListenerLocation;
     private LocationListener locationListener;
     private Location mUserLocation;
+    private Firebase rootRef;
+    private SharedPreferences prefs;
+    private DataInputFragment dataInputFragment;
 
 
     @Override
@@ -34,16 +45,27 @@ public class MainActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        prefs = getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
 
 
         /**
          * Link layout elements from XML and setup the toolbar
          */
+        authWithFirebase();
         initializeScreen();
         setupListners();
         buildGoogleApiClient();
 
+    }
+
+    private void authWithFirebase() {
+        rootRef = new Firebase(Constants.FIREBASE_URL);
+        rootRef.addAuthStateListener(new Firebase.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(AuthData authData) {
+
+            }
+        });
     }
 
     private void setupListners() {
@@ -54,7 +76,8 @@ public class MainActivity extends BaseActivity{
                 mUserLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClientLocation);
                 if(mUserLocation != null)
                 {
-                    Toast.makeText(MainActivity.this, mUserLocation.getLatitude() + " " + mUserLocation.getLongitude(), Toast.LENGTH_LONG).show();
+
+                    dataInputFragment.sendLocation(mUserLocation);
                 }
             }
 
@@ -103,7 +126,19 @@ public class MainActivity extends BaseActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        return super.onOptionsItemSelected(item);
+        switch(id)
+        {
+            case R.id.action_logout:
+                rootRef.unauth();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+
     }
 
     @Override
@@ -176,9 +211,11 @@ public class MainActivity extends BaseActivity{
             switch (position) {
                 case 0:
                     fragment = DataInputFragment.newInstance();
+                    dataInputFragment = (DataInputFragment) fragment;
                     break;
                 case 1:
                     fragment = MapsFragment.newInstance(mUserLocation);
+
                     break;
                 default:
                     fragment = DataInputFragment.newInstance();
@@ -187,6 +224,8 @@ public class MainActivity extends BaseActivity{
 
             return fragment;
         }
+
+
 
 
         @Override
@@ -210,4 +249,5 @@ public class MainActivity extends BaseActivity{
             }
         }
     }
+
 }

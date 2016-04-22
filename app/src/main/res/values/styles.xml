@@ -8,6 +8,10 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="subHeaderText">
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="symptomText">
         <item name="android:textSize">14sp</item>
     </style>

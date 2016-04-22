@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ciphers.lifesource.utils.Constants;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 
 /**
  * Created by Rashed on 21/04/2016.
@@ -76,4 +78,5 @@ public class MapsFragment extends Fragment{
     private void initializeScreen(View rootView) {
 
     }
+
 }

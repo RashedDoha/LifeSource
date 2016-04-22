@@ -38,5 +38,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:8.3.0'
 
     compile 'com.firebase:firebase-client-android:2.4.0'
+    compile 'com.firebase:geofire:1.1.0+'
 
 }

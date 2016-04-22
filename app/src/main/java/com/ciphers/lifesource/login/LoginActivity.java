@@ -1,7 +1,9 @@
 package com.ciphers.lifesource.login;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -46,7 +48,7 @@ public class LoginActivity extends BaseActivity {
     /* A dialog that is presented until the Firebase authentication finished. */
     private ProgressDialog mAuthProgressDialog;
     private EditText mEditTextEmailInput, mEditTextPasswordInput;
-
+    private SharedPreferences prefs;
     /**
      * Variables related to Google Login
      */
@@ -61,6 +63,20 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Firebase ref = new Firebase(Constants.FIREBASE_URL);
+        prefs = getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
+        ref.addAuthStateListener(new Firebase.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(AuthData authData) {
+                if(authData!=null)
+                {
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+
+            }
+        });
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 

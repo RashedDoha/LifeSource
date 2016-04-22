@@ -13,5 +13,6 @@ public class LifeSourceApplication extends Application {
         super.onCreate();
 
         Firebase.setAndroidContext(this);
+
     }
 }
