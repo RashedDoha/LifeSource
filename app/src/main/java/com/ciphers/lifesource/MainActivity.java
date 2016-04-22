@@ -38,15 +38,14 @@ public class MainActivity extends BaseActivity{
     private Firebase rootRef;
     private SharedPreferences prefs;
     private DataInputFragment dataInputFragment;
-
-    public static FragmentManager fragmentManager;
+    private MapsFragment mapsFragment;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        fragmentManager = getSupportFragmentManager();
+
         prefs = getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
 
 
@@ -80,6 +79,7 @@ public class MainActivity extends BaseActivity{
                 {
 
                     dataInputFragment.sendLocation(mUserLocation);
+                    mapsFragment.sendLocation(mUserLocation);
                 }
             }
 
@@ -217,6 +217,8 @@ public class MainActivity extends BaseActivity{
                     break;
                 case 1:
                     fragment = MapsFragment.newInstance();
+                    mapsFragment = (MapsFragment) fragment;
+                    mapsFragment = (MapsFragment) fragment;
 
                     break;
                 default:
