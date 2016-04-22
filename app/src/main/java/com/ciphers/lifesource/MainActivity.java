@@ -20,7 +20,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity{
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private GoogleApiClient mGoogleApiClientLocation;
     private GoogleApiClient.ConnectionCallbacks mCallbacksLocation;
@@ -34,16 +34,33 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
+
+        /**
+         * Link layout elements from XML and setup the toolbar
+         */
+        initializeScreen();
+        setupListners();
+        buildGoogleApiClient();
+
+    }
+
+    private void setupListners() {
         mCallbacksLocation = new GoogleApiClient.ConnectionCallbacks() {
             @Override
             public void onConnected(Bundle bundle) {
                 Log.d(LOG_TAG, "Connected!");
-
+                mUserLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClientLocation);
+                if(mUserLocation != null)
+                {
+                    Toast.makeText(MainActivity.this, mUserLocation.getLatitude() + " " + mUserLocation.getLongitude(), Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
             public void onConnectionSuspended(int i) {
-
+                Log.d(LOG_TAG, "Connection suspended!");
             }
         };
 
@@ -55,11 +72,6 @@ public class MainActivity extends BaseActivity {
         };
 
 
-        /**
-         * Link layout elements from XML and setup the toolbar
-         */
-        initializeScreen();
-        buildGoogleApiClient();
     }
 
     private void buildGoogleApiClient() {
@@ -96,16 +108,14 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onStart() {
-        mGoogleApiClientLocation.connect();
         super.onStart();
-
+        mGoogleApiClientLocation.connect();
     }
 
     @Override
     protected void onStop() {
         if(mGoogleApiClientLocation.isConnected()) mGoogleApiClientLocation.disconnect();
         super.onStop();
-
     }
 
 
@@ -138,6 +148,7 @@ public class MainActivity extends BaseActivity {
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
+
 
 
     /**
