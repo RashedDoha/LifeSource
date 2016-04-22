@@ -100,19 +100,7 @@ public class MainActivity extends BaseActivity implements ResultCallback<Status>
                     mapsFragment.sendLocation(mUserLocation);
                 }
 
-                try {
-                    LocationServices.GeofencingApi.addGeofences(
-                            mGoogleApiClient,
-                            // The GeofenceRequest object.
-                            getGeofencingRequest(),
-                            // A pending intent that that is reused when calling removeGeofences(). This
-                            // pending intent is used to generate an intent when a matched geofence
-                            // transition is observed.
-                            getGeofencePendingIntent()
-                    ).setResultCallback(MainActivity.this); // Result processed in onResult().
-                } catch (SecurityException securityException) {
-                    // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
-                }
+
             }
 
             @Override
@@ -312,7 +300,7 @@ public class MainActivity extends BaseActivity implements ResultCallback<Status>
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         /**
@@ -326,6 +314,9 @@ public class MainActivity extends BaseActivity implements ResultCallback<Status>
                 case 0:
                     return getString(R.string.pager_title_data_input);
                 case 1:
+                    return getString(R.string.pager_title_maps);
+                case 2:
+                    return getString(R.string.pager_title_nasa);
                 default:
                     return getString(R.string.pager_title_maps);
             }

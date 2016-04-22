@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Life Source</string>
     <string name="pager_title_data_input">Symptoms</string>
+    <string name="pager_title_nasa">NASA</string>
     <string name="pager_title_maps">Near Me</string>
     <string name="remove_item_option">Remove Item</string>
     <string name="positive_button_create">Create</string>
