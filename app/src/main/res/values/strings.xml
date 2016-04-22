@@ -20,6 +20,8 @@
     <string name="other_disease">Other: </string>
     <string name="additional_info">Additional Information: </string>
     <string name="user_feedback">My Feedback: </string>
+    <string name="health_symptom_text">User\'s Symptoms</string>
+    <string name="userDiseasesText">Common Diseases In Area</string>
 
     <string name="fever_string">Fever: </string>
     <string name="flu_string">Flu: </string>
@@ -78,6 +80,7 @@
     <string name="error_cannot_be_empty">This cannot be empty.</string>
     <string name="submit_string">Submit</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_details">Submitted Data</string>
 
 
 </resources>

@@ -18,6 +18,7 @@ public class Constants {
     /* KEYS FOR BUNDLES */
     public static final String KEY_LATITUDE = "USER_LATITUDE";
     public static final String KEY_LONGITUDE = "USER_LONGITUDE";
+    public static final String KEY_USER_DATA = "USER_DATA";
 
 
     /* Firebase references*/

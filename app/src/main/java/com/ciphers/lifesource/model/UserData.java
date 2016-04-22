@@ -46,7 +46,7 @@ public class UserData {
         return hasShortness;
     }
 
-    public boolean isHasWheezing() {
+    public boolean getHasWheezing() {
         return hasWheezing;
     }
 

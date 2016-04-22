@@ -1,5 +1,6 @@
 package com.ciphers.lifesource;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,9 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ciphers.lifesource.model.UserData;
 import com.ciphers.lifesource.utils.Constants;
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
@@ -24,6 +29,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -36,7 +42,7 @@ public class MapsFragment extends Fragment{
     MapView mMapView;
     private GoogleMap googleMap;
 
-    private Firebase locationRef;
+    private Firebase locationRef, userRef;
     private GeoFire mGeofire;
     private GeoQuery geoQuery;
     private ArrayList<String> keys;
@@ -71,6 +77,7 @@ public class MapsFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         locationRef = new Firebase(Constants.FIREBASE_URL).child(Constants.FIREBASE_LOCATION_LATLNG);
+        userRef = new Firebase(Constants.FIREBASE_URL).child(Constants.FIREBASE_LOCATION_USERS);
         mGeofire = new GeoFire(locationRef);
         keys = new ArrayList<>();
         locations = new ArrayList<>();
@@ -99,12 +106,45 @@ public class MapsFragment extends Fragment{
         }
 
         googleMap = mMapView.getMap();
-        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
-            public void onInfoWindowClick(Marker marker) {
+            public boolean onMarkerClick(Marker marker) {
                 double lat = marker.getPosition().latitude;
                 double lon = marker.getPosition().longitude;
+                Query queryRef = userRef.orderByChild("latitude").equalTo(lat);
+                queryRef.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        UserData data = dataSnapshot.getValue(UserData.class);
+                        Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                        String jsonData = new Gson().toJson(data);
+                        intent.putExtra(Constants.KEY_USER_DATA, jsonData);
+                        startActivity(intent);
+                        Log.d(LOG_TAG, "User Feedback: " + data.getUserFeedback());
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
                 Log.d(LOG_TAG, lat + " " + lon);
+                return false;
             }
         });
         // latitude and longitude
@@ -172,7 +212,7 @@ public class MapsFragment extends Fragment{
 
         // create marker
         MarkerOptions marker = new MarkerOptions().position(
-                new LatLng(latitude, longitude)).title("Hello Maps");
+                new LatLng(latitude, longitude));
 
         // Changing marker icon
         marker.icon(BitmapDescriptorFactory
@@ -181,7 +221,7 @@ public class MapsFragment extends Fragment{
         // adding marker
         googleMap.addMarker(marker);
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(latitude, longitude)).zoom(12).build();
+                .target(new LatLng(latitude, longitude)).zoom(30).build();
         googleMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
 
@@ -191,7 +231,7 @@ public class MapsFragment extends Fragment{
             public void onKeyEntered(String key, GeoLocation location) {
                 // create marker
                 MarkerOptions marker = new MarkerOptions().position(
-                        new LatLng(location.latitude, location.longitude)).title("Hello Maps");
+                        new LatLng(location.latitude, location.longitude));
 
                 // Changing marker icon
                 marker.icon(BitmapDescriptorFactory
@@ -203,17 +243,13 @@ public class MapsFragment extends Fragment{
 
             @Override
             public void onKeyExited(String key) {
-                for (int i = 0; i < keys.size(); i++) {
 
-                }
             }
 
             @Override
             public void onKeyMoved(String key, GeoLocation location) {
                 for (int i = 0; i < keys.size(); i++) {
-                    if (keys.get(i).equals(key)) {
 
-                    }
                 }
             }
 
