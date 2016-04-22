@@ -19,4 +19,11 @@
         <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
+    <style name="Widget.Ciphers.Button.Login" parent="android:Widget.Button">
+        <item name="android:paddingLeft">18dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:textSize">@dimen/login_buttons_text_size</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
 </resources>

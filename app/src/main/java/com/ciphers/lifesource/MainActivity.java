@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -36,7 +37,8 @@ public class MainActivity extends BaseActivity {
         mCallbacksLocation = new GoogleApiClient.ConnectionCallbacks() {
             @Override
             public void onConnected(Bundle bundle) {
-                mUserLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClientLocation);
+                Log.d(LOG_TAG, "Connected!");
+
             }
 
             @Override
@@ -48,9 +50,10 @@ public class MainActivity extends BaseActivity {
         mFailedListenerLocation = new GoogleApiClient.OnConnectionFailedListener() {
             @Override
             public void onConnectionFailed(ConnectionResult connectionResult) {
-
+                Log.d(LOG_TAG, "Connection Failed!");
             }
         };
+
 
         /**
          * Link layout elements from XML and setup the toolbar
@@ -93,14 +96,16 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onStart() {
-        super.onStart();
         mGoogleApiClientLocation.connect();
+        super.onStart();
+
     }
 
     @Override
     protected void onStop() {
-        super.onStop();
         if(mGoogleApiClientLocation.isConnected()) mGoogleApiClientLocation.disconnect();
+        super.onStop();
+
     }
 
 
@@ -127,6 +132,11 @@ public class MainActivity extends BaseActivity {
          * Setup the mTabLayout with view pager
          */
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 
 

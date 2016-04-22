@@ -28,8 +28,8 @@ public class MapsFragment extends Fragment{
     public static MapsFragment newInstance(Location mLocation) {
         MapsFragment fragment = new MapsFragment();
         Bundle args = new Bundle();
-        args.putDouble(Constants.KEY_LATITUDE, mLocation.getLatitude());
-        args.putDouble(Constants.KEY_LONGITUDE, mLocation.getLongitude());
+//        args.putDouble(Constants.KEY_LATITUDE, mLocation.getLatitude());
+//        args.putDouble(Constants.KEY_LONGITUDE, mLocation.getLongitude());
         fragment.setArguments(args);
         return fragment;
     }

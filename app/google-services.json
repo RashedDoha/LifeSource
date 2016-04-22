@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_id": "lifesource-2e8d2",
+    "project_number": "650942493699",
+    "name": "LifeSource"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:650942493699:android:0e895900a3f3267e",
+        "client_id": "android:com.ciphers.lifesource",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.ciphers.lifesource",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "650942493699-qem1d2fhvclg2tu076g7c67h8j9o2d32.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ciphers.lifesource",
+            "certificate_hash": "CD8DF97AFD09B1169AD15E34388186D81E7D1317"
+          }
+        },
+        {
+          "client_id": "650942493699-iisfgm5ckgk92aie2anr19n0q745tujs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
