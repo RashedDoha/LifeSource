@@ -39,12 +39,14 @@ public class MainActivity extends BaseActivity{
     private SharedPreferences prefs;
     private DataInputFragment dataInputFragment;
 
+    public static FragmentManager fragmentManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        fragmentManager = getSupportFragmentManager();
         prefs = getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
 
 
@@ -214,7 +216,7 @@ public class MainActivity extends BaseActivity{
                     dataInputFragment = (DataInputFragment) fragment;
                     break;
                 case 1:
-                    fragment = MapsFragment.newInstance(mUserLocation);
+                    fragment = MapsFragment.newInstance();
 
                     break;
                 default:

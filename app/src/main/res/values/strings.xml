@@ -77,6 +77,7 @@
     <string name="error_invalid_password_not_valid">Please enter a password that is at least 6 characters long.</string>
     <string name="error_cannot_be_empty">This cannot be empty.</string>
     <string name="submit_string">Submit</string>
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>

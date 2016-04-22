@@ -1,6 +1,7 @@
 package com.ciphers.lifesource;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.Auth;

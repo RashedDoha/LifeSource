@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ciphers.lifesource.utils.Constants;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 
 /**
  * Created by Rashed on 21/04/2016.
@@ -27,11 +25,9 @@ public class MapsFragment extends Fragment{
      * Create fragment and pass bundle with data as it's arguments
      * Right now there are not arguments...but eventually there will be.
      */
-    public static MapsFragment newInstance(Location mLocation) {
+    public static MapsFragment newInstance() {
         MapsFragment fragment = new MapsFragment();
         Bundle args = new Bundle();
-//        args.putDouble(Constants.KEY_LATITUDE, mLocation.getLatitude());
-//        args.putDouble(Constants.KEY_LONGITUDE, mLocation.getLongitude());
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,8 +46,7 @@ public class MapsFragment extends Fragment{
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            userLat = getArguments().getDouble(Constants.KEY_LATITUDE);
-            userLong = getArguments().getDouble(Constants.KEY_LONGITUDE);
+
         }
     }
 
@@ -78,5 +73,4 @@ public class MapsFragment extends Fragment{
     private void initializeScreen(View rootView) {
 
     }
-
 }

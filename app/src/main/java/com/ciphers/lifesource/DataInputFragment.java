@@ -181,7 +181,7 @@ public class DataInputFragment extends Fragment implements View.OnClickListener{
 
     public void sendLocation(Location mUserLocation) {
         userLocation = mUserLocation;
-        //Toast.makeText(this.getActivity(), "Called from Fragment", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this.getActivity(), "Called from Fragment", Toast.LgENGTH_LONG).show();
     }
 
     private class AllergySelectionListener implements AdapterView.OnItemSelectedListener {
