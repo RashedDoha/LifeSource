@@ -16,6 +16,10 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="editTextStyle">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
     <style name="userSymptomTextStyle">
         <item name="android:textSize">14sp</item>
         <item name="android:lineSpacingExtra">10dp</item>

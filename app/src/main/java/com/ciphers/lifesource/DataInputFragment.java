@@ -140,7 +140,7 @@ public class DataInputFragment extends Fragment implements View.OnClickListener{
         spinnerAdapter.setDropDownViewResource(simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
         submitButton.setOnClickListener(this);
-//        spinner.setOnItemSelectedListener(new AllergySelectionListener());
+        spinner.setOnItemSelectedListener(new AllergySelectionListener());
 
     }
 
@@ -187,7 +187,7 @@ public class DataInputFragment extends Fragment implements View.OnClickListener{
     private class AllergySelectionListener implements AdapterView.OnItemSelectedListener {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            //if(position == 4) allergyEditText.setEnabled(true);
+            Log.d(LOG_TAG, position + "");
         }
 
         @Override

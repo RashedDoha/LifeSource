@@ -1,5 +1,6 @@
 package com.ciphers.lifesource;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,29 +24,39 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Result;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 
-public class MainActivity extends BaseActivity{
+public class MainActivity extends BaseActivity implements ResultCallback<Status>{
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-    private GoogleApiClient mGoogleApiClientLocation;
-    private GoogleApiClient.ConnectionCallbacks mCallbacksLocation;
-    private GoogleApiClient.OnConnectionFailedListener mFailedListenerLocation;
+    private GoogleApiClient mGoogleApiClientLocation, mGoogleApiClientGeofence;
+    private GoogleApiClient.ConnectionCallbacks mCallbacksLocation, mCallbacksGeofence;
+    private GoogleApiClient.OnConnectionFailedListener mFailedListenerLocation, mFailedListenerGeofence;
     private LocationListener locationListener;
     private Location mUserLocation;
     private Firebase rootRef;
     private SharedPreferences prefs;
     private DataInputFragment dataInputFragment;
     private MapsFragment mapsFragment;
+    protected ArrayList<Geofence> mGeofenceList;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mGeofenceList = new ArrayList<Geofence>();
         prefs = getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
 
 
@@ -55,6 +66,7 @@ public class MainActivity extends BaseActivity{
         authWithFirebase();
         initializeScreen();
         setupListners();
+        populateGeofenceList();
         buildGoogleApiClient();
 
     }
@@ -69,6 +81,12 @@ public class MainActivity extends BaseActivity{
         });
     }
 
+    private PendingIntent getGeofencePendingIntent() {
+        Intent intent = new Intent(this, GeofenceTransitionIntentService.class);
+        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling addgeoFences()
+        return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
     private void setupListners() {
         mCallbacksLocation = new GoogleApiClient.ConnectionCallbacks() {
             @Override
@@ -80,6 +98,20 @@ public class MainActivity extends BaseActivity{
 
                     dataInputFragment.sendLocation(mUserLocation);
                     mapsFragment.sendLocation(mUserLocation);
+                }
+
+                try {
+                    LocationServices.GeofencingApi.addGeofences(
+                            mGoogleApiClient,
+                            // The GeofenceRequest object.
+                            getGeofencingRequest(),
+                            // A pending intent that that is reused when calling removeGeofences(). This
+                            // pending intent is used to generate an intent when a matched geofence
+                            // transition is observed.
+                            getGeofencePendingIntent()
+                    ).setResultCallback(MainActivity.this); // Result processed in onResult().
+                } catch (SecurityException securityException) {
+                    // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
                 }
             }
 
@@ -97,6 +129,35 @@ public class MainActivity extends BaseActivity{
         };
 
 
+    }
+
+    public void populateGeofenceList() {
+        for (Map.Entry<String, LatLng> entry : Constants.BAY_AREA_LANDMARKS.entrySet()) {
+
+            mGeofenceList.add(new Geofence.Builder()
+                    // Set the request ID of the geofence. This is a string to identify this
+                    // geofence.
+                    .setRequestId(entry.getKey())
+
+                            // Set the circular region of this geofence.
+                    .setCircularRegion(
+                            entry.getValue().latitude,
+                            entry.getValue().longitude,
+                            Constants.GEOFENCE_RADIUS_IN_METERS
+                    )
+
+                            // Set the expiration duration of the geofence. This geofence gets automatically
+                            // removed after this period of time.
+                    .setExpirationDuration(Constants.GEOFENCE_EXPIRATION_IN_MILLISECONDS)
+
+                            // Set the transition types of interest. Alerts are only generated for these
+                            // transition. We track entry and exit transitions in this sample.
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                            Geofence.GEOFENCE_TRANSITION_EXIT)
+
+                            // Create the geofence.
+                    .build());
+        }
     }
 
     private void buildGoogleApiClient() {
@@ -173,7 +234,7 @@ public class MainActivity extends BaseActivity{
          * Create SectionPagerAdapter, set it as adapter to viewPager with setOffscreenPageLimit(2)
          **/
         SectionPagerAdapter adapter = new SectionPagerAdapter(getSupportFragmentManager());
-        viewPager.setOffscreenPageLimit(2);
+        viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(adapter);
         /**
          * Setup the mTabLayout with view pager
@@ -186,6 +247,20 @@ public class MainActivity extends BaseActivity{
 
     }
 
+    @Override
+    public void onResult(Status status) {
+        if (status.isSuccess()) {
+            Toast.makeText(
+                    this,
+                    "Geofences Added",
+                    Toast.LENGTH_SHORT
+            ).show();
+        } else {
+            // Get the status code for the error and log it using a user-friendly message.
+            String errorMessage = GeofenceErrorMessages.getErrorString(this,
+                    status.getStatusCode());
+        }
+    }
 
 
     /**
@@ -221,6 +296,9 @@ public class MainActivity extends BaseActivity{
                     mapsFragment = (MapsFragment) fragment;
 
                     break;
+                case 2:
+                    fragment = NasaViewFragment.newInstance();
+                    break;
                 default:
                     fragment = DataInputFragment.newInstance();
                     break;
@@ -252,6 +330,13 @@ public class MainActivity extends BaseActivity{
                     return getString(R.string.pager_title_maps);
             }
         }
+    }
+
+    private GeofencingRequest getGeofencingRequest() {
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
+        builder.addGeofences(mGeofenceList);
+        return builder.build();
     }
 
 }

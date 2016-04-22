@@ -150,7 +150,8 @@
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/allergy_spinner"/>
+                android:id="@+id/allergy_spinner"
+                />
 
 
         </LinearLayout>
@@ -256,7 +257,8 @@
                 android:id="@+id/otherDiseaseEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:editable="true" />
+                android:editable="true"
+                style="@style/editTextStyle"/>
 
 
         </LinearLayout>
@@ -270,7 +272,8 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="@dimen/userInputBoxHeight"
-            android:id="@+id/additionalEditText"/>
+            android:id="@+id/additionalEditText"
+            style="@style/editTextStyle"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -281,7 +284,8 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="@dimen/userInputBoxHeight"
-            android:id="@+id/feedbackEditText"/>
+            android:id="@+id/feedbackEditText"
+            style="@style/editTextStyle"/>
 
 
         <Button
