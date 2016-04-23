@@ -49,6 +49,7 @@ public class MainActivity extends BaseActivity implements ResultCallback<Status>
     private SharedPreferences prefs;
     private DataInputFragment dataInputFragment;
     private MapsFragment mapsFragment;
+    private NasaViewFragment nasaFragment;
     protected ArrayList<Geofence> mGeofenceList;
 
 
@@ -98,6 +99,21 @@ public class MainActivity extends BaseActivity implements ResultCallback<Status>
 
                     dataInputFragment.sendLocation(mUserLocation);
                     mapsFragment.sendLocation(mUserLocation);
+                    nasaFragment.sendLocation(mUserLocation);
+                }
+
+                try {
+                    LocationServices.GeofencingApi.addGeofences(
+                            mGoogleApiClientLocation,
+                            // The GeofenceRequest object.
+                            getGeofencingRequest(),
+                            // A pending intent that that is reused when calling removeGeofences(). This
+                            // pending intent is used to generate an intent when a matched geofence
+                            // transition is observed.
+                            getGeofencePendingIntent()
+                    ).setResultCallback(MainActivity.this); // Result processed in onResult().
+                } catch (SecurityException securityException) {
+                    // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
                 }
 
 
@@ -185,6 +201,10 @@ public class MainActivity extends BaseActivity implements ResultCallback<Status>
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 return true;
+            case R.id.action_stats:
+                Intent statIntent = new Intent(this, StatsActivity.class);
+                startActivity(statIntent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
 
@@ -250,6 +270,10 @@ public class MainActivity extends BaseActivity implements ResultCallback<Status>
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     /**
      * SectionPagerAdapter class that extends FragmentStatePagerAdapter to save fragments state
@@ -281,11 +305,10 @@ public class MainActivity extends BaseActivity implements ResultCallback<Status>
                 case 1:
                     fragment = MapsFragment.newInstance();
                     mapsFragment = (MapsFragment) fragment;
-                    mapsFragment = (MapsFragment) fragment;
-
                     break;
                 case 2:
                     fragment = NasaViewFragment.newInstance();
+                    nasaFragment = (NasaViewFragment) fragment;
                     break;
                 default:
                     fragment = DataInputFragment.newInstance();

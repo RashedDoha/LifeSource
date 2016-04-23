@@ -11,6 +11,7 @@
     <string name="log_out">Log Out</string>
     <string name="health_condition_text">My Health Condition</string>
     <string name="diseases_text">Common Diseases In My Area</string>
+    <string name="stats_text">A Cumulative Statistic At Location</string>
     <string name="cough_string">Cough: </string>
     <string name="shortness_string">Shortness of Breath: </string>
     <string name="wheezing_string">Wheezing: </string>
@@ -27,6 +28,7 @@
     <string name="fever_string">Fever: </string>
     <string name="flu_string">Flu: </string>
     <string name="asthma_string">Asthma: </string>
+    <string name="stats">View Stats Nearby</string>
 
 
     <string-array name="allergen_array">
@@ -107,6 +109,7 @@
         Geofence transition error: invalid transition type %1$d
     </string>
     <string name="geofence_transition_notification_text">Click notification to return to app</string>
+    <string name="title_activity_stats">Stats at location</string>
 
 
 </resources>

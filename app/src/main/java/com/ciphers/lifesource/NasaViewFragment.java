@@ -1,17 +1,21 @@
 package com.ciphers.lifesource;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
 
 /**
  * Created by Rashed on 23/04/2016.
  */
 public class NasaViewFragment extends Fragment{
+    private Location userLocation;
+    private WebView webView;
 
     public NasaViewFragment() {
     }
@@ -44,7 +48,15 @@ public class NasaViewFragment extends Fragment{
          * Initialize UI elements
          */
         View rootView = inflater.inflate(R.layout.fragment_nasa, container, false);
-        initializeScreen(rootView);
+
+        webView = (WebView)rootView.findViewById(R.id.webView);
+
+        webView.setInitialScale(1);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        webView.setScrollbarFadingEnabled(false);
 
 
 
@@ -62,4 +74,13 @@ public class NasaViewFragment extends Fragment{
 
     }
 
+    public void sendLocation(Location mUserLocation) {
+        userLocation = mUserLocation;
+        String baseURL = "http://earth.nullschool.net/#current/wind/surface/level/patterson=";
+        StringBuilder builder = new StringBuilder();
+        builder.append(baseURL);
+        builder.append(userLocation.getLongitude() + "," + userLocation.getLatitude() + ",1000" + "/loc="+
+        userLocation.getLongitude() + "," + userLocation.getLatitude());
+        webView.loadUrl(builder.toString());
+    }
 }

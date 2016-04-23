@@ -44,10 +44,6 @@ public class DetailsActivity extends AppCompatActivity {
         {
             builder.append("Nasal Obstruction" + "\n");
         }
-        if(data.getHasAsthma())
-        {
-            builder.append("Asthma" + "\n");
-        }
         String symptoms = builder.toString();
         TextView symptomTextView = (TextView) findViewById(R.id.symptomsTextView);
         symptomTextView.setText(symptoms);
